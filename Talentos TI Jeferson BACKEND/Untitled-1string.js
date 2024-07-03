@@ -1,5 +1,5 @@
 //.length
-const meuNome = 'Leonardo de Souza'
+/*const meuNome = 'Leonardo de Souza'
 console.log(meuNome.length)//17
 
 //charAt()
@@ -34,4 +34,4 @@ console.log(arrayLinguagens) // [JavasScript,Java,C#]
 //trim()
 let login = "      leo@emailteste.com     ";
 let loginSemEspaco = login.trim();
-console.log(loginSemEspaco); //leo@emailteste.com
+console.log(loginSemEspaco); //leo@emailteste.com*/

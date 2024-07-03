@@ -130,7 +130,76 @@ console.log(`${num1} é menor ou igual a ${num2}? ` , num1 <= num2)*/
 
 
 
+//Exercícios 5
+
+//Número Positivo ou Negativo: Solicite um número do usuário e, em seguida, determine 
+//se o número é positivo, negativo ou igual a zero. Exiba a mensagem correspondente.
+
+/*const readlineSync = require('readline-sync')
+
+let Number = leitor.question("Digite um número")
+if(numero < 0) {
+    alert("O valor informado é menor que zero");
+}else {
+    document.write(numero);
+}*/
+
+//Login Simples: Crie uma variável com uma senha (por exemplo, "1234"). Solicite ao 
+//usuário que insira uma senha e verifique se a senha inserida corresponde à senha armazenada.
+// Exiba uma mensagem de "Login bem-sucedido" ou "Senha incorreta".
+
+
+//Calculadora Básica: Solicite ao usuário dois números e uma operação (por exemplo, +, -, *, /).
+// Use if e else para executar a operação escolhida e exibir o resultado.
+
+/*const readlineSync = require('readline-sync')
+
+let leitor = require('readline-sync')
+
+let valorUm = leitor.questionInt('Insira o primeiro valor: ')
+let valorDois = leitor.questionInt('Insira o segundo valor: ')
+
+let operacao = leitor.question("digite o simbolo da operação desejada: +, -, *, /: ")
+
+if (operacao == "+"){
+    console.log(`A soma é ${valorUm + valorDois}`);
+} else if (operacao == "-"){
+    console.log(`A subtração é ${valorUm - valorDois}`);
+} else if (operacao == "*"){
+    console.log(`A multiplicação é ${valorUm * valorDois}`);
+} else if (operacao == "/"){
+    console.log(`A Divisão é ${valorUm / valorDois}`);
+} else {
+    console.log(`Operação inexistente, tente novamente`)
+} */   
 
 
 
+//Maior de Três Números: Peça ao usuário para inserir três números e use if e else para determinar
+// qual é o maior dos três. Em seguida, exiba o número maior.
 
+const readlineSync = require('readline-sync')
+
+let leitor = require('readline-sync')
+
+let valor1 = leitor.questionFloat("Insira o primeiro valor: ")
+let valor2 = leitor.questionFloat("Insira o segundo valor: ")
+let valor3 = leitor.questionFloat("Insira o terceiro valor: ")
+
+if (valor1 > valor2 > valor3){
+    console.log(`0 ${valor1} é o maior número`);
+} else if (valor2 > valor1 && valor2 > valor3){
+    console.log(`0 ${valor2} é o maior número`);
+} else if (valor3 > valor1 && valor3 > valor2){
+    console.log(`0 ${valor1} é o maior número`);
+}
+
+//Transformar todos os códigos anteriores em funções com parâmetros e criar um menu switch case para 
+//escolher e utilizar as funções.
+
+//Escreva um programa que conte de 1 a 10 e, para cada número, exiba o resultado da multiplicação desse número por 5. 
+
+
+//Crie um programa que gere a tabela de multiplicação de um número específico fornecido pelo usuário, indo de 1 a 10.
+
+//https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Statements/for
