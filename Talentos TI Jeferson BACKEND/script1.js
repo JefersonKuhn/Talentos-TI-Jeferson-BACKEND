@@ -1,5 +1,5 @@
 
-// AULA= 01/07/24
+// AULA= 01/07/24 REVISÃO LÓGICA
 
 /*const nome = "Jeferson"
 let sobrenome = "Kuhn Dutra"
@@ -178,7 +178,7 @@ if (operacao == "+"){
 //Maior de Três Números: Peça ao usuário para inserir três números e use if e else para determinar
 // qual é o maior dos três. Em seguida, exiba o número maior.
 
-const readlineSync = require('readline-sync')
+/*const readlineSync = require('readline-sync')
 
 let leitor = require('readline-sync')
 
@@ -192,7 +192,7 @@ if (valor1 > valor2 > valor3){
     console.log(`0 ${valor2} é o maior número`);
 } else if (valor3 > valor1 && valor3 > valor2){
     console.log(`0 ${valor1} é o maior número`);
-}
+}*/
 
 //Transformar todos os códigos anteriores em funções com parâmetros e criar um menu switch case para 
 //escolher e utilizar as funções.
@@ -203,3 +203,7 @@ if (valor1 > valor2 > valor3){
 //Crie um programa que gere a tabela de multiplicação de um número específico fornecido pelo usuário, indo de 1 a 10.
 
 //https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Statements/for
+
+
+
+
