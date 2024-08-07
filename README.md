@@ -1,203 +1,114 @@
-# negotiator
+[npm-image]: https://img.shields.io/npm/v/mysql2.svg
+[npm-url]: https://npmjs.com/package/mysql2
+[node-version-image]: https://img.shields.io/node/v/mysql2.svg
+[node-version-url]: https://nodejs.org/en/download
+[downloads-image]: https://img.shields.io/npm/dm/mysql2.svg
+[downloads-url]: https://npmjs.com/package/mysql2
+[license-url]: https://github.com/sidorares/node-mysql2/blob/master/License
+[license-image]: https://img.shields.io/npm/l/mysql2.svg?maxAge=2592000
+[node-mysql]: https://github.com/mysqljs/mysql
+[mysqljs]: https://github.com/mysqljs
+[mysql-native]: https://github.com/sidorares/nodejs-mysql-native
+[sidorares]: https://github.com/sidorares
+[TooTallNate]: https://gist.github.com/TooTallNate
+[starttls.js]: https://gist.github.com/TooTallNate/848444
+[node-mariasql]: https://github.com/mscdex/node-mariasql
+[contributors]: https://github.com/sidorares/node-mysql2/graphs/contributors
+[contributing]: https://github.com/sidorares/node-mysql2/blob/master/Contributing.md
+[docs-base]: https://sidorares.github.io/node-mysql2/docs
+[docs-base-zh-CN]: https://sidorares.github.io/node-mysql2/zh-CN/docs
+[docs-base-pt-BR]: https://sidorares.github.io/node-mysql2/pt-BR/docs
+[docs-prepared-statements]: https://sidorares.github.io/node-mysql2/docs/documentation/prepared-statements
+[docs-mysql-server]: https://sidorares.github.io/node-mysql2/docs/documentation/mysql-server
+[docs-promise-wrapper]: https://sidorares.github.io/node-mysql2/docs/documentation/promise-wrapper
+[docs-authentication-switch]: https://sidorares.github.io/node-mysql2/docs/documentation/authentication-switch
+[docs-streams]: https://sidorares.github.io/node-mysql2/docs/documentation/extras
+[docs-typescript-docs]: https://sidorares.github.io/node-mysql2/docs/documentation/typescript-examples
+[docs-qs-pooling]: https://sidorares.github.io/node-mysql2/docs#using-connection-pools
+[docs-qs-first-query]: https://sidorares.github.io/node-mysql2/docs#first-query
+[docs-qs-using-prepared-statements]: https://sidorares.github.io/node-mysql2/docs#using-prepared-statements
+[docs-examples]: https://sidorares.github.io/node-mysql2/docs/examples
+[docs-faq]: https://sidorares.github.io/node-mysql2/docs/faq
+[docs-documentation]: https://sidorares.github.io/node-mysql2/docs/documentation
+[docs-contributing]: https://sidorares.github.io/node-mysql2/docs/contributing/website
+[coverage]: https://img.shields.io/codecov/c/github/sidorares/node-mysql2
+[coverage-url]: https://app.codecov.io/github/sidorares/node-mysql2
+[ci-url]: https://github.com/sidorares/node-mysql2/actions/workflows/ci-coverage.yml?query=branch%3Amaster
+[ci-image]: https://img.shields.io/github/actions/workflow/status/sidorares/node-mysql2/ci-coverage.yml?event=push&style=flat&label=CI&branch=master
+
+# MySQL2
 
 [![NPM Version][npm-image]][npm-url]
 [![NPM Downloads][downloads-image]][downloads-url]
 [![Node.js Version][node-version-image]][node-version-url]
-[![Build Status][github-actions-ci-image]][github-actions-ci-url]
-[![Test Coverage][coveralls-image]][coveralls-url]
+[![GitHub Workflow Status (with event)][ci-image]][ci-url]
+[![Codecov][coverage]][coverage-url]
+[![License][license-image]][license-url]
 
-An HTTP content negotiator for Node.js
+[English][docs-base] | [简体中文][docs-base-zh-CN] | [Português (BR)][docs-base-pt-BR]
+
+> MySQL client for Node.js with focus on performance. Supports prepared statements, non-utf8 encodings, binary log protocol, compression, ssl [much more][docs-documentation].
+
+**Table of Contents**
+
+- [History and Why MySQL2](#history-and-why-mysql2)
+- [Installation](#installation)
+- [Documentation](#documentation)
+- [Acknowledgements](#acknowledgements)
+- [Contributing](#contributing)
+
+## History and Why MySQL2
+
+MySQL2 project is a continuation of [MySQL-Native][mysql-native]. Protocol parser code was rewritten from scratch and api changed to match popular [Node MySQL][node-mysql]. MySQL2 team is working together with [Node MySQL][node-mysql] team to factor out shared code and move it under [mysqljs][mysqljs] organization.
+
+MySQL2 is mostly API compatible with [Node MySQL][node-mysql] and supports majority of features. MySQL2 also offers these additional features:
+
+- Faster / Better Performance
+- [Prepared Statements][docs-prepared-statements]
+- MySQL Binary Log Protocol
+- [MySQL Server][docs-mysql-server]
+- Extended support for Encoding and Collation
+- [Promise Wrapper][docs-promise-wrapper]
+- Compression
+- SSL and [Authentication Switch][docs-authentication-switch]
+- [Custom Streams][docs-streams]
+- [Pooling][docs-qs-pooling]
 
 ## Installation
 
-```sh
-$ npm install negotiator
+MySQL2 is free from native bindings and can be installed on Linux, Mac OS or Windows without any issues.
+
+```bash
+npm install --save mysql2
 ```
 
-## API
+If you are using TypeScript, you will need to install `@types/node`.
 
-```js
-var Negotiator = require('negotiator')
+```bash
+npm install --save-dev @types/node
 ```
 
-### Accept Negotiation
+> For TypeScript documentation and examples, see [here][docs-typescript-docs].
 
-```js
-availableMediaTypes = ['text/html', 'text/plain', 'application/json']
+## Documentation
 
-// The negotiator constructor receives a request object
-negotiator = new Negotiator(request)
+- [Quickstart][docs-base]
+  - [First Query][docs-qs-first-query], [Using Prepared Statements][docs-qs-using-prepared-statements], [Using Connection Pools][docs-qs-pooling] and more.
+- [Documentation][docs-documentation]
+- [Examples][docs-examples]
+- [FAQ][docs-faq]
 
-// Let's say Accept header is 'text/html, application/*;q=0.2, image/jpeg;q=0.8'
+## Acknowledgements
 
-negotiator.mediaTypes()
-// -> ['text/html', 'image/jpeg', 'application/*']
+- Internal protocol is written by [@sidorares][sidorares] [MySQL-Native][mysql-native].
+- Constants, SQL parameters interpolation, Pooling, `ConnectionConfig` class taken from [Node MySQL][node-mysql].
+- SSL upgrade code based on [@TooTallNate][TooTallNate] [code][starttls.js].
+- Secure connection / compressed connection api flags compatible to [MariaSQL][node-mariasql] client.
+- [Contributors][contributors].
 
-negotiator.mediaTypes(availableMediaTypes)
-// -> ['text/html', 'application/json']
+## Contributing
 
-negotiator.mediaType(availableMediaTypes)
-// -> 'text/html'
-```
+Want to improve something in **MySQL2**?
+Please check [Contributing.md][contributing] for detailed instruction on how to get started.
 
-You can check a working example at `examples/accept.js`.
-
-#### Methods
-
-##### mediaType()
-
-Returns the most preferred media type from the client.
-
-##### mediaType(availableMediaType)
-
-Returns the most preferred media type from a list of available media types.
-
-##### mediaTypes()
-
-Returns an array of preferred media types ordered by the client preference.
-
-##### mediaTypes(availableMediaTypes)
-
-Returns an array of preferred media types ordered by priority from a list of
-available media types.
-
-### Accept-Language Negotiation
-
-```js
-negotiator = new Negotiator(request)
-
-availableLanguages = ['en', 'es', 'fr']
-
-// Let's say Accept-Language header is 'en;q=0.8, es, pt'
-
-negotiator.languages()
-// -> ['es', 'pt', 'en']
-
-negotiator.languages(availableLanguages)
-// -> ['es', 'en']
-
-language = negotiator.language(availableLanguages)
-// -> 'es'
-```
-
-You can check a working example at `examples/language.js`.
-
-#### Methods
-
-##### language()
-
-Returns the most preferred language from the client.
-
-##### language(availableLanguages)
-
-Returns the most preferred language from a list of available languages.
-
-##### languages()
-
-Returns an array of preferred languages ordered by the client preference.
-
-##### languages(availableLanguages)
-
-Returns an array of preferred languages ordered by priority from a list of
-available languages.
-
-### Accept-Charset Negotiation
-
-```js
-availableCharsets = ['utf-8', 'iso-8859-1', 'iso-8859-5']
-
-negotiator = new Negotiator(request)
-
-// Let's say Accept-Charset header is 'utf-8, iso-8859-1;q=0.8, utf-7;q=0.2'
-
-negotiator.charsets()
-// -> ['utf-8', 'iso-8859-1', 'utf-7']
-
-negotiator.charsets(availableCharsets)
-// -> ['utf-8', 'iso-8859-1']
-
-negotiator.charset(availableCharsets)
-// -> 'utf-8'
-```
-
-You can check a working example at `examples/charset.js`.
-
-#### Methods
-
-##### charset()
-
-Returns the most preferred charset from the client.
-
-##### charset(availableCharsets)
-
-Returns the most preferred charset from a list of available charsets.
-
-##### charsets()
-
-Returns an array of preferred charsets ordered by the client preference.
-
-##### charsets(availableCharsets)
-
-Returns an array of preferred charsets ordered by priority from a list of
-available charsets.
-
-### Accept-Encoding Negotiation
-
-```js
-availableEncodings = ['identity', 'gzip']
-
-negotiator = new Negotiator(request)
-
-// Let's say Accept-Encoding header is 'gzip, compress;q=0.2, identity;q=0.5'
-
-negotiator.encodings()
-// -> ['gzip', 'identity', 'compress']
-
-negotiator.encodings(availableEncodings)
-// -> ['gzip', 'identity']
-
-negotiator.encoding(availableEncodings)
-// -> 'gzip'
-```
-
-You can check a working example at `examples/encoding.js`.
-
-#### Methods
-
-##### encoding()
-
-Returns the most preferred encoding from the client.
-
-##### encoding(availableEncodings)
-
-Returns the most preferred encoding from a list of available encodings.
-
-##### encodings()
-
-Returns an array of preferred encodings ordered by the client preference.
-
-##### encodings(availableEncodings)
-
-Returns an array of preferred encodings ordered by priority from a list of
-available encodings.
-
-## See Also
-
-The [accepts](https://npmjs.org/package/accepts#readme) module builds on
-this module and provides an alternative interface, mime type validation,
-and more.
-
-## License
-
-[MIT](LICENSE)
-
-[npm-image]: https://img.shields.io/npm/v/negotiator.svg
-[npm-url]: https://npmjs.org/package/negotiator
-[node-version-image]: https://img.shields.io/node/v/negotiator.svg
-[node-version-url]: https://nodejs.org/en/download/
-[coveralls-image]: https://img.shields.io/coveralls/jshttp/negotiator/master.svg
-[coveralls-url]: https://coveralls.io/r/jshttp/negotiator?branch=master
-[downloads-image]: https://img.shields.io/npm/dm/negotiator.svg
-[downloads-url]: https://npmjs.org/package/negotiator
-[github-actions-ci-image]: https://img.shields.io/github/workflow/status/jshttp/negotiator/ci/master?label=ci
-[github-actions-ci-url]: https://github.com/jshttp/negotiator/actions/workflows/ci.yml
+To contribute in **MySQL2 Documentation**, please visit the [Website Contributing Guidelines][docs-contributing] for detailed instruction on how to get started.

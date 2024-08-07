@@ -1,82 +1,83 @@
-/*!
- * negotiator
- * Copyright(c) 2012 Federico Romero
- * Copyright(c) 2012-2014 Isaac Z. Schlueter
- * Copyright(c) 2015 Douglas Christopher Wilson
- * MIT Licensed
- */
-
 'use strict';
 
-var preferredCharsets = require('./lib/charset')
-var preferredEncodings = require('./lib/encoding')
-var preferredLanguages = require('./lib/language')
-var preferredMediaTypes = require('./lib/mediaType')
+const SqlString = require('sqlstring');
 
-/**
- * Module exports.
- * @public
- */
+const Connection = require('./lib/connection.js');
+const ConnectionConfig = require('./lib/connection_config.js');
+const parserCache = require('./lib/parsers/parser_cache');
 
-module.exports = Negotiator;
-module.exports.Negotiator = Negotiator;
+exports.createConnection = function(opts) {
+  return new Connection({ config: new ConnectionConfig(opts) });
+};
 
-/**
- * Create a Negotiator instance from a request.
- * @param {object} request
- * @public
- */
+exports.connect = exports.createConnection;
+exports.Connection = Connection;
+exports.ConnectionConfig = ConnectionConfig;
 
-function Negotiator(request) {
-  if (!(this instanceof Negotiator)) {
-    return new Negotiator(request);
+const Pool = require('./lib/pool.js');
+const PoolCluster = require('./lib/pool_cluster.js');
+
+exports.createPool = function(config) {
+  const PoolConfig = require('./lib/pool_config.js');
+  return new Pool({ config: new PoolConfig(config) });
+};
+
+exports.createPoolCluster = function(config) {
+  const PoolCluster = require('./lib/pool_cluster.js');
+  return new PoolCluster(config);
+};
+
+exports.createQuery = Connection.createQuery;
+
+exports.Pool = Pool;
+
+exports.PoolCluster = PoolCluster;
+
+exports.createServer = function(handler) {
+  const Server = require('./lib/server.js');
+  const s = new Server();
+  if (handler) {
+    s.on('connection', handler);
   }
-
-  this.request = request;
-}
-
-Negotiator.prototype.charset = function charset(available) {
-  var set = this.charsets(available);
-  return set && set[0];
+  return s;
 };
 
-Negotiator.prototype.charsets = function charsets(available) {
-  return preferredCharsets(this.request.headers['accept-charset'], available);
+exports.PoolConnection = require('./lib/pool_connection');
+exports.authPlugins = require('./lib/auth_plugins');
+exports.escape = SqlString.escape;
+exports.escapeId = SqlString.escapeId;
+exports.format = SqlString.format;
+exports.raw = SqlString.raw;
+
+exports.__defineGetter__(
+  'createConnectionPromise',
+  () => require('./promise.js').createConnection
+);
+
+exports.__defineGetter__(
+  'createPoolPromise',
+  () => require('./promise.js').createPool
+);
+
+exports.__defineGetter__(
+  'createPoolClusterPromise',
+  () => require('./promise.js').createPoolCluster
+);
+
+exports.__defineGetter__('Types', () => require('./lib/constants/types.js'));
+
+exports.__defineGetter__('Charsets', () =>
+  require('./lib/constants/charsets.js')
+);
+
+exports.__defineGetter__('CharsetToEncoding', () =>
+  require('./lib/constants/charset_encodings.js')
+);
+
+exports.setMaxParserCache = function(max) {
+  parserCache.setMaxCache(max);
 };
 
-Negotiator.prototype.encoding = function encoding(available) {
-  var set = this.encodings(available);
-  return set && set[0];
+exports.clearParserCache = function() {
+  parserCache.clearCache();
 };
-
-Negotiator.prototype.encodings = function encodings(available) {
-  return preferredEncodings(this.request.headers['accept-encoding'], available);
-};
-
-Negotiator.prototype.language = function language(available) {
-  var set = this.languages(available);
-  return set && set[0];
-};
-
-Negotiator.prototype.languages = function languages(available) {
-  return preferredLanguages(this.request.headers['accept-language'], available);
-};
-
-Negotiator.prototype.mediaType = function mediaType(available) {
-  var set = this.mediaTypes(available);
-  return set && set[0];
-};
-
-Negotiator.prototype.mediaTypes = function mediaTypes(available) {
-  return preferredMediaTypes(this.request.headers.accept, available);
-};
-
-// Backwards compatibility
-Negotiator.prototype.preferredCharset = Negotiator.prototype.charset;
-Negotiator.prototype.preferredCharsets = Negotiator.prototype.charsets;
-Negotiator.prototype.preferredEncoding = Negotiator.prototype.encoding;
-Negotiator.prototype.preferredEncodings = Negotiator.prototype.encodings;
-Negotiator.prototype.preferredLanguage = Negotiator.prototype.language;
-Negotiator.prototype.preferredLanguages = Negotiator.prototype.languages;
-Negotiator.prototype.preferredMediaType = Negotiator.prototype.mediaType;
-Negotiator.prototype.preferredMediaTypes = Negotiator.prototype.mediaTypes;
