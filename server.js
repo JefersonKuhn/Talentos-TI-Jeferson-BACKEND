@@ -1,91 +1,239 @@
+/*PEGAR/produtos
+Este endpoint deve retornar todos os produtos cadastrados no banco de dados.*/
+/*A resposta deve ser um array de objetos JSON representando os produtos.*/
 const express = require('express');
-const mysql = require('mysql2');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+
+const app = express();
+
+app.use(bodyParser.json());
+
+mongoose.connect('mongodb://localhost:27017/produtosDB', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+const produtoSchema = new mongoose.Schema({
+  nome: String,
+  descricao: String,
+  preco: Number,
+});
+
+const Produto = mongoose.model('Produto', produtoSchema);
+
+app.post('/PUBLICAR/produtos', async (req, res) => {
+  try {
+    const novoProduto = new Produto({
+      nome: req.body.nome,
+      descricao: req.body.descricao,
+      preco: req.body.preco,
+    });
+
+    await novoProduto.save();
+  res.status(201).json({ message: 'Produto adicionado com sucesso!', produto: novoProduto });
+  } catch (error) {
+   
+    res.status(500).json({ message: 'Erro ao adicionar o produto', error });
+  }
+});
+
+app.get('/PEGAR/produtos', async (req, res) => {
+  try {
+   
+    const produtos = await Produto.find();
+    res.status(200).json(produtos);
+  } catch (error) {
+    res.status(500).json({ message: 'Erro ao obter os produtos', error });
+  }
+});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
+});
+
+//Testando o Endpoint
+[
+    {
+      "_id": "1",
+      "nome": "Produto Exemplo",
+      "descricao": "Descrição do produto",
+      "preco": 99.99,
+      "__v": 0
+    },
+    ...
+  ]
+
+  /*PEGAR/produtos/:id
+  Este endpoint deve retornar os detalhes de um produto específico, com base no idpassado na URL.
+  Se o produto não for encontrado, deverá retornar uma mensagem de erro.*/
+
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+
+const app = express();
+
+app.use(bodyParser.json());
+
+mongoose.connect('mongodb://localhost:27017/produtosDB', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+const catalogo_produtos = new catalogo_produtos({
+  nome: String,
+  descricao: String,
+  preco: Number,
+});
+
+const catalogo_produtos = produto.model('Produto', catalogo_produtos);
+
+app.post('/PUBLICAR/produtos', async (req, res) => {
+  try {
+    
+    const novoProduto = new Produto({
+      nome: req.body.nome,
+      descricao: req.body.descricao,
+      preco: req.body.preco,
+    });
+
+   
+    await novoProduto.save();
+
+  
+    res.status(201).json({ message: 'Produto adicionado com sucesso!', produto: novoProduto });
+  } catch (error) {
+   
+    res.status(500).json({ message: 'Erro ao adicionar o produto', error });
+  }
+});
+
+app.get('/PEGAR/produtos', async (req, res) => {
+  try {
+ 
+    const produtos = await Produto.find();
+
+   
+    res.status(200).json(produtos);
+  } catch (error) {
+ 
+    res.status(500).json({ message: 'Erro ao obter os produtos', error });
+  }
+});
+
+app.get('/PEGAR/produtos/:id', async (req, res) => {
+  try {
+  
+    const produtoId = req.params.id;
+
+    const produto = await Produto.findById(produtoId);
+
+    if (!produto) {
+     
+      return res.status(404).json({ message: 'Produto não encontrado' });
+    }
+
+    res.status(200).json(produto);
+  } catch (error) {
+ 
+    res.status(500).json({ message: 'Erro ao obter o produto', error });
+  }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
+});
+
+//Testando o Endpoint
+{
+    "_id": "64a6e6f8a6fbc3d84c4e6e7d",
+    "nome": "Produto Exemplo",
+    "descricao": "Descrição do produto",
+    "preco": 99.99,
+    "__v": 0
+  }
+  /*COLOCAR/produtos/:id
+Este endpoint deve atualizar as informações de um produto específico, com base no idpassado na URL.
+O corpo da requisição deverá conter os campos que serão atualizados: nome, descricao, e preco.
+Exemplo de corpo da requisição:*/
+
+const express = require('express');
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
 const app = express();
 app.use(bodyParser.json());
-
-// Configuração da conexão com o banco de dados
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '', // Senha padrão do XAMPP é vazia
-  database: 'meu_banco'
+mongoose.connect('mongodb://localhost:27017/produtosDB', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 
-// Conectar ao banco de dados
-connection.connect(error => {
-  if (error) {
-    console.error('Erro ao conectar ao banco de dados: ' + error.stack);
-    return;
+
+const catalogo_produtos = new catalogo_produtos({
+  nome: String,
+  descricao: String,
+  preco: Number,
+});
+
+
+const Produto = mongoose.model('Produto', catalogo_produtos);
+
+app.post('/PUBLICAR/produtos', async (req, res) => {
+  try {
+    const novoProduto = new Produto({
+      nome: req.body.nome,
+      descricao: req.body.descricao,
+      preco: req.body.preco,
+    });
+    await novoProduto.save();
+
+    res.status(201).json({ message: 'Produto adicionado com sucesso!', produto: novoProduto });
+  } catch (error) {
+    
+    res.status(500).json({ message: 'Erro ao adicionar o produto', error });
   }
-  console.log('Conectado ao banco de dados com ID ' + connection.threadId);
 });
 
-// Endpoint para adicionar um usuário (POST)
-app.post('/usuarios', (req, res) => {
-  const { nome, email, senha } = req.body;
-  const sql = 'INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)';
-  connection.query(sql, [nome, email, senha], (error, results) => {
-    if (error) {
-      res.status(500).send('Erro ao adicionar usuário.');
-      return;
+app.get('/PEGAR/produtos', async (req, res) => {
+  try {
+   
+    const produtos = await Produto.find();
+
+    res.status(200).json(produtos);
+  } catch (error) {
+   
+    res.status(500).json({ message: 'Erro ao obter os produtos', error });
+  }
+});
+
+app.get('/PEGAR/produtos/:id', async (req, res) => {
+  try {
+    
+    const produtoId = req.params.id;
+    const produto = await Produto.findById(produtoId);
+
+    if (!produto) {
+      return res.status(404).json({ message: 'Produto não encontrado' });
     }
-    res.status(201).send('Usuário adicionado com sucesso.');
-  });
+    res.status(200).json(produto);
+  } catch (error) {
+    res.status(500).json({ message: 'Erro ao obter o produto', error });
+  }
 });
 
-// Endpoint para obter todos os usuários (GET)
-app.get('/usuarios', (req, res) => {
-  connection.query('SELECT * FROM usuarios', (error, results) => {
-    if (error) {
-      res.status(500).send('Erro ao obter usuários.');
-      return;
-    }
-    res.json(results);
-  });
-});
+app.put('/COLOCAR/produtos/:id', async (req, res) => {
+  try {
+    const produtoId = req.params.id;
+    const produtoAtualizado = await Produto.findByIdAndUpdate(produtoId, req.body, { new: true });
 
-// Endpoint para obter um usuário por ID (GET)
-app.get('/usuarios/:id', (req, res) => {
-  const { id } = req.params;
-  connection.query('SELECT * FROM usuarios WHERE id = ?', [id], (error, results) => {
-    if (error) {
-      res.status(500).send('Erro ao obter usuário.');
-      return;
-    }
-    res.json(results[0]);
-  });
-});
+    if (!produtoAtualizado) {
+      return res.status(404).json({ message: 'Produto não encontrado' });
 
-// Endpoint para atualizar um usuário (PUT)
-app.put('/usuarios/:id', (req, res) => {
-  const { id } = req.params;
-  const { nome, email, senha } = req.body;
-  const sql = 'UPDATE usuarios SET nome = ?, email = ?, senha = ? WHERE id = ?';
-  connection.query(sql, [nome, email, senha, id], (error, results) => {
-    if (error) {
-      res.status(500).send('Erro ao atualizar usuário.');
-      return;
-    }
-    res.send('Usuário atualizado com sucesso.');
-  });
-});
-
-// Endpoint para deletar um usuário (DELETE)
-app.delete('/usuarios/:id', (req, res) => {
-  const { id } = req.params;
-  connection.query('DELETE FROM usuarios WHERE id = ?', [id], (error, results) => {
-    if (error) {
-      res.status(500).send('Erro ao deletar usuário.');
-      return;
-    }
-    res.send('Usuário deletado com sucesso.');
-  });
-});
-
-// Iniciar o servidor
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+//Testando o Endpoint
+{
+    "nome": "Produto Atualizado",
+    "descricao": "Descrição atualizada do produto",
+    "preco": 149.99
+  }
